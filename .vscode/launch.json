@@ -1,0 +1,14 @@
+{
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Spring Boot-NheejodsApplication<nheejods>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "com.projects.nheejods.NheejodsApplication",
+            "projectName": "nheejods",
+            "args": "",
+            "envFile": "${workspaceFolder}/.env"
+        }
+    ]
+}
