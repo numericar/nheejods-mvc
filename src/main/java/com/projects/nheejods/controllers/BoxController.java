@@ -10,7 +10,7 @@ public class BoxController {
 
     @GetMapping
     public String viewBoxsPage() {
-        return "index";
+        return "boxs/boxs";
     }
 
 }
