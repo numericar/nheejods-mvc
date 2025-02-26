@@ -26,6 +26,14 @@ public class Role {
     @OneToMany(mappedBy = "role", fetch = FetchType.LAZY)
     private Set<User> users;
 
+    public Role() {
+        
+    }
+
+    public Role(String name) {
+        this.name = name;
+    }
+
     public Integer getId() {
         return id;
     }
