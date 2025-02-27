@@ -21,7 +21,7 @@ import com.projects.nheejods.repositories.UserRepository;
 @EnableWebSecurity
 public class SecurityConfig {
     private final String[] resourceUrl = { "/css/**", "/js/**", "/images/**" };
-    private final String[] publicUrl = {};
+    private final String[] publicUrl = { "/auths/**" };
     private final String[] privateUrl = { "/boxs/**" };
 
     private final UserRepository userRepository;
