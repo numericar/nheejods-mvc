@@ -40,11 +40,12 @@ public class User {
 
     }
 
-    public User(String email, String password) {
+    public User(String email, String password, Role role) {
         LocalDateTime currentDateTime = LocalDateTime.now();
 
         this.email = email;
         this.password = password;
+        this.role = role;
         this.createdAt = currentDateTime;
         this.updatedAt = currentDateTime;
     }

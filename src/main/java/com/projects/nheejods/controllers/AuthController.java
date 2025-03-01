@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.projects.nheejods.dtos.RegisterDto;
+import com.projects.nheejods.entities.Role;
+import com.projects.nheejods.services.interfaces.RoleService;
 import com.projects.nheejods.services.interfaces.UserService;
 
 import jakarta.validation.Valid;
@@ -20,10 +22,12 @@ public class AuthController {
 
     private final PasswordEncoder passwordEncoder;
     private final UserService userService;
+    private final RoleService roleService;
     
-    public AuthController(PasswordEncoder passwordEncoder, UserService userService) {
+    public AuthController(PasswordEncoder passwordEncoder, UserService userService, RoleService roleService) {
         this.passwordEncoder = passwordEncoder;
         this.userService = userService;
+        this.roleService = roleService;
     }
 
     @GetMapping("/login")
@@ -42,22 +46,30 @@ public class AuthController {
 
     @PostMapping("/register")
     public String register(@Valid @ModelAttribute("registerDto") RegisterDto registerDto, BindingResult result, Model model) {
-        if (!registerDto.getPassword().equals(registerDto.getConfirmPassword())) {
-            result.rejectValue("confirmPassword", "error.registerDto", "Password and Confirm password not matched");
-        }
+        try {
+            if (!registerDto.getPassword().equals(registerDto.getConfirmPassword())) {
+                result.rejectValue("confirmPassword", "error.registerDto", "Password and Confirm password not matched");
+            }
+    
+            if (this.userService.isDupplicateEmail(registerDto.getEmail())) {
+                result.rejectValue("email", "error.registerDto", "Email is aleady to use");
+            }
+    
+            if (result.hasErrors()) {
+                return "auths/register";
+            }
+    
+            String passwordEncoded = this.passwordEncoder.encode(registerDto.getPassword());
+    
+            Role memberRole = this.roleService.getMemberRole();
+    
+            this.userService.create(registerDto.getEmail(), passwordEncoded, memberRole);
+    
+            return "redirect:/auths/login";
+        } catch (Exception ex) {
+            System.out.println(ex.getMessage());
 
-        if (this.userService.isDupplicateEmail(registerDto.getEmail())) {
-            result.rejectValue("email", "error.registerDto", "Email is aleady to use");
-        }
-
-        if (result.hasErrors()) {
             return "auths/register";
         }
-
-        String passwordEncoded = this.passwordEncoder.encode(registerDto.getPassword());
-
-        this.userService.create(registerDto.getEmail(), passwordEncoded);
-
-        return "redirect:/auths/login";
     }
 }
