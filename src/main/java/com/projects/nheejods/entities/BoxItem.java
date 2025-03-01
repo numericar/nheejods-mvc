@@ -1,7 +1,6 @@
 package com.projects.nheejods.entities;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -11,23 +10,22 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "users")
-public class User {
+@Table(name = "box_items")
+public class BoxItem {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Integer id;
 
-    @Column(name = "email", unique = true, nullable = false, length = 150)
-    private String email;
+    @Column(name = "title", length = 150, nullable = false)
+    private String title;
 
-    @Column(name = "password", nullable = false, length = 64)
-    private String password;
+    @Column(name = "amount", nullable = false)
+    private Double amount;
 
     @Column(name = "created_at", nullable = false)
     private LocalDateTime createdAt;
@@ -35,23 +33,18 @@ public class User {
     @Column(name = "updated_at", nullable = false)
     private LocalDateTime updatedAt;
 
-    @ManyToOne
-    @JoinColumn(name = "role_id")
-    private Role role;
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "box_id")
+    private Box box;
 
-    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
-    private List<Box> boxs;
-
-    public User() {
-
+    public BoxItem() {
     }
 
-    public User(String email, String password, Role role) {
+    public BoxItem(String title, Double amount) {
         LocalDateTime currentDateTime = LocalDateTime.now();
 
-        this.email = email;
-        this.password = password;
-        this.role = role;
+        this.title = title;
+        this.amount = amount;
         this.createdAt = currentDateTime;
         this.updatedAt = currentDateTime;
     }
@@ -64,20 +57,20 @@ public class User {
         this.id = id;
     }
 
-    public String getEmail() {
-        return email;
+    public String getTitle() {
+        return title;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
+    public void setTitle(String title) {
+        this.title = title;
     }
 
-    public String getPassword() {
-        return password;
+    public Double getAmount() {
+        return amount;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
+    public void setAmount(Double amount) {
+        this.amount = amount;
     }
 
     public LocalDateTime getCreatedAt() {
@@ -96,25 +89,18 @@ public class User {
         this.updatedAt = updatedAt;
     }
 
-    public Role getRole() {
-        return role;
+    public Box getBox() {
+        return box;
     }
 
-    public void setRole(Role role) {
-        this.role = role;
-    }
-
-    public List<Box> getBoxs() {
-        return boxs;
-    }
-
-    public void setBoxs(List<Box> boxs) {
-        this.boxs = boxs;
+    public void setBox(Box box) {
+        this.box = box;
     }
 
     @Override
     public String toString() {
-        return "User [id=" + id + ", email=" + email + ", password=" + password + ", createdAt=" + createdAt
-                + ", updatedAt=" + updatedAt + "]";
+        return "BoxItem [id=" + id + ", title=" + title + ", amount=" + amount + ", createdAt=" + createdAt
+                + ", updatedAt=" + updatedAt + ", box=" + box + "]";
     }
+
 }
