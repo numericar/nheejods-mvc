@@ -58,4 +58,9 @@ public class BoxController {
         return "boxs/boxs_index";
     }
 
+    @GetMapping("/create")
+    public String viewCreateBoxPage(Model model) {
+        return "auths/boxs_create";
+    }
+
 }

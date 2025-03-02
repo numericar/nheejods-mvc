@@ -1,12 +1,12 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://thymeleaf.org/extras/spring-security">
 
 <head th:replace="~{commons/head :: header}"></head>
 
 <body>
     <nav th:replace="~{commons/navbar :: navbar}"></nav>
     <div class="container mx-auto mt-5">
-        <section id="filter" class="mb-10">
+        <section id="filter" class="mb-10 flex justify-between items-end">
             <form th:action="@{/boxs}" method="get" class="w-full flex items-end gap-5">
                 <div id="monthSelector" class="w-25">
                     <span class="text-sm">month</span>
@@ -86,6 +86,9 @@
                     <button type="submit" class="border-[1px] border-solid border-gray-500 px-5 py-1 rounded-lg cursor-pointer w-full text-center bg-blue-500 text-white transition hover:bg-blue-400">find</button>
                 </div>
             </form>
+            <div>
+                <a th:href="@{/boxs/create}" class="bg-orange-500 px-4 py-2 text-white transition rounded-lg cursor-pointer hover:bg-orange-400">create</a>
+            </div>
         </section>
         <section id="boxs" class="grid grid-cols-4 gap-5">
             <div class="border-[1px] border-gray-400 border-solid overflow-hidden rounded-lg p-4 cursor-pointer transition hover:bg-linear-to-r hover:from-orange-500/25 hover:to-blue-500/25">
