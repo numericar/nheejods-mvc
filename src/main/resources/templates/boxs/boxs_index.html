@@ -6,7 +6,7 @@
 <body>
     <nav th:replace="~{commons/navbar :: navbar}"></nav>
     <div class="container mx-auto mt-5">
-        <section id="filter">
+        <section id="filter" class="mb-10">
             <form th:action="@{/boxs}" method="get" class="w-full flex items-end gap-5">
                 <div id="monthSelector" class="w-25">
                     <span class="text-sm">month</span>
@@ -35,7 +35,7 @@
                             <div 
                                 type="button" 
                                 th:each="month, iterStat : ${months}" 
-                                class="cursor-pointer hover:bg-gray-100 px-2 py-1 transition w-full" 
+                                class="cursor-pointer hover:bg-gray-100 px-2 py-1 transition w-full bg-white" 
                                 th:object="${month}" 
                                 th:attr="onclick=|onSelectedMonth('${month}', 'months-${iterStat.index}')|"
                             >
@@ -72,7 +72,7 @@
                             <div 
                                 type="button" 
                                 th:each="year, iterStat : ${years}" 
-                                class="cursor-pointer hover:bg-gray-100 px-2 py-1 transition w-full" 
+                                class="cursor-pointer hover:bg-gray-100 px-2 py-1 transition w-full bg-white" 
                                 th:object="${year}" 
                                 th:attr="onclick=|onSelectedYear('${year}', 'year-${iterStat.index}')|"
                             >
@@ -87,8 +87,35 @@
                 </div>
             </form>
         </section>
-        <section id="boxs">
-
+        <section id="boxs" class="grid grid-cols-4 gap-5">
+            <div class="border-[1px] border-gray-400 border-solid overflow-hidden rounded-lg p-4 cursor-pointer transition hover:bg-linear-to-r hover:from-orange-500/25 hover:to-blue-500/25">
+                <div class="text-center">
+                    <h1 class="font-bold text-lg">Janury</h1>
+                </div>
+                <div class="text-center">
+                    <span class="text-sm">Remaining</span>
+                    <p>20000</p>
+                </div>
+                <div class="flex justify-around">
+                    <div class="text-center">
+                        <span class="text-sm text-green-500 font-bold">income</span>
+                        <p>40000</p>
+                    </div>
+                    <div class="text-center">
+                        <span class="text-sm text-red-500 font-bold">expense</span>
+                        <p>20000</p>
+                    </div>
+                </div>
+                <div class="text-center mt-5">
+                    <div class="grid grid-cols-4 gap-2 w-40 mx-auto">
+                        <div class="h-2 bg-green-500"></div>
+                        <div class="h-2 bg-yellow-500"></div>
+                        <div class="h-2 bg-red-500"></div>
+                        <div class="h-2 bg-red-900"></div>
+                    </div>
+                    <h2 class="font-bold text-2xl">40.00%</h2>
+                </div>
+            </div>
         </section>
     </div>
 
