@@ -5,7 +5,124 @@
 
 <body>
     <nav th:replace="~{commons/navbar :: navbar}"></nav>
-    <h1>This is boxs page</h1>
+    <div class="container mx-auto mt-5">
+        <section id="filter">
+            <form th:action="@{/boxs}" method="get" class="w-full flex items-end gap-5">
+                <div id="monthSelector" class="w-25">
+                    <span class="text-sm">month</span>
+                    <div class="relative">
+                        <div class="
+                            border-[1px]
+                            border-solid    
+                            boder-gray-500
+                            px-5
+                            py-1
+                            rounded-lg
+                            cursor-pointer
+                            bg-white
+                            w-full
+                            text-center" onclick="toggleDropdownMonth()">
+                            <span id="monthNameSelected">
+                                <th:block th:if="${monthSelected} != null">
+                                    [[${monthSelected}]]
+                                </th:block>
+                                <th:block th:if="${monthSelected} == null">
+                                    -
+                                </th:block>
+                            </span>
+                        </div>
+                        <div id="monthItems" class="border-[1px] border-solid border-gray-500 rounded-lg overflow-hidden absolute top-12 w-full hidden">
+                            <div 
+                                type="button" 
+                                th:each="month, iterStat : ${months}" 
+                                class="cursor-pointer hover:bg-gray-100 px-2 py-1 transition w-full" 
+                                th:object="${month}" 
+                                th:attr="onclick=|onSelectedMonth('${month}', 'months-${iterStat.index}')|"
+                            >
+                                <input type="radio" name="months" th:id="'months-' + ${iterStat.index}" class="hidden" th:value="${month}" th:checked="${month} == ${monthSelected}">
+                                [[${month}]]
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div id="yearSelector" class="w-25">
+                    <span class="text-sm">year</span>
+                    <div class="relative">
+                        <div class="
+                            border-[1px]
+                            border-solid    
+                            boder-gray-500
+                            px-5
+                            py-1
+                            rounded-lg
+                            cursor-pointer
+                            bg-white
+                            w-full
+                            text-center" onclick="toggleDropdownYear()">
+                            <span id="yearNameSelected">
+                                <th:block th:if="${yearSelected} != null">
+                                    [[${yearSelected}]]
+                                </th:block>
+                                <th:block th:if="${yearSelected} == null">
+                                    -
+                                </th:block>
+                            </span>
+                        </div>
+                        <div id="yearItems" class="border-[1px] border-solid border-gray-500 rounded-lg overflow-hidden absolute top-12 w-full hidden">
+                            <div 
+                                type="button" 
+                                th:each="year, iterStat : ${years}" 
+                                class="cursor-pointer hover:bg-gray-100 px-2 py-1 transition w-full" 
+                                th:object="${year}" 
+                                th:attr="onclick=|onSelectedYear('${year}', 'year-${iterStat.index}')|"
+                            >
+                                <input type="radio" name="years" th:id="'year-' + ${iterStat.index}" class="hidden" th:value="${year}" th:checked="${year} == ${yearSelected}">
+                                 [[${year}]]
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="w-25">
+                    <button type="submit" class="border-[1px] border-solid border-gray-500 px-5 py-1 rounded-lg cursor-pointer w-full text-center bg-blue-500 text-white transition hover:bg-blue-400">find</button>
+                </div>
+            </form>
+        </section>
+        <section id="boxs">
+
+        </section>
+    </div>
+
+    <script>
+        function toggleDropdownMonth() {
+            const itemsElement = document.getElementById("monthItems");
+            itemsElement.classList.toggle("hidden");
+        }
+
+        function onSelectedMonth(val, id) {
+            const monthNameSelectedElement = document.getElementById("monthNameSelected");
+            const itemsElement = document.getElementById("monthItems");
+            const radioElement = document.getElementById(id);
+
+            monthNameSelectedElement.innerText = val;
+            radioElement.checked = true;
+            itemsElement.classList.toggle("hidden");
+        }
+
+        function toggleDropdownYear() {
+            const itemsElement = document.getElementById("yearItems");
+            itemsElement.classList.toggle("hidden");
+        }
+
+        function onSelectedYear(val, id) {
+            const yearNameSelectedElement = document.getElementById("yearNameSelected");
+            const itemsElement = document.getElementById("yearItems");
+            const radioElement = document.getElementById(id);
+
+            yearNameSelectedElement.innerText = val;
+            radioElement.checked = true;
+            itemsElement.classList.toggle("hidden");
+        }
+    </script>
 </body>
 
 </html>
