@@ -60,7 +60,7 @@ public class BoxController {
 
     @GetMapping("/create")
     public String viewCreateBoxPage(Model model) {
-        return "auths/boxs_create";
+        return "boxs/boxs_create";
     }
 
 }
