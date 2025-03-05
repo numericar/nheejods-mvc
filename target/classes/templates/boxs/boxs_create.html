@@ -8,97 +8,86 @@
 		<div id="summary" class="mb-10">
 			<h2>Summary</h2>
 			<div class="grid grid-cols-3 gap-5 w-[25%] text-sm">
-				<div class="border border-[2px] border-gray-500 rounded-lg px-3 py-1">
+				<div
+					class="border border-[2px] border-gray-500 rounded-lg px-3 py-1">
 					<span>Income</span>
 					<p class="text-center">20000</p>
 				</div>
-				<div class="border border-[2px] border-gray-500 rounded-lg px-3 py-1">
+				<div
+					class="border border-[2px] border-gray-500 rounded-lg px-3 py-1">
 					<span class="text-sm">Expense</span>
 					<p class="text-center">10000</p>
 				</div>
-				<div class="border border-[2px] border-gray-500 rounded-lg px-3 py-1">
+				<div
+					class="border border-[2px] border-gray-500 rounded-lg px-3 py-1">
 					<span class="text-sm">Remaining</span>
 					<p class="text-center">10000</p>
 				</div>
 			</div>
 		</div>
-		<div>
-			<div class="grid grid-cols-2 gap-20">
-				<div id="incomeContent">
-					<h2>Incomes table</h2>
-					<table class="table-auto border border-gray-300 w-full">
-						<thead class="bg-green-600 text-white text-left">
-							<tr>
-								<th class="px-5 py-1 border border-2 border-green-700">title</th>
-								<th class="px-5 py-1 border border-2 border-green-700">amount</th>
-								<th class="px-5 py-1 border border-2 border-green-700"></th>
-							</tr>
-						</thead>
-						<tbody id="incomeItems">
-							<tr>
-								<td class="border border-2 border-green-700">
-									<input
+		<form th:action="@{/boxs/create}" method="post">
+			<div>
+				<button class="px-4 py-2 bg-blue-500 cursor-pointer text-white transition rounded-lg hover:bg-blue-400">save</button>
+				<div class="grid grid-cols-2 gap-20">
+					<div id="incomeContent">
+						<h2>Incomes table</h2>
+						<table class="table-auto border border-gray-300 w-full">
+							<thead class="bg-green-600 text-white text-left">
+								<tr>
+									<th class="px-5 py-1 border border-2 border-green-700">title</th>
+									<th class="px-5 py-1 border border-2 border-green-700">amount</th>
+									<th class="px-5 py-1 border border-2 border-green-700"></th>
+								</tr>
+							</thead>
+							<tbody id="incomeItems">
+								<tr>
+									<td class="border border-2 border-green-700"><input
 										type="text" name="incomeTitle" id="incomeTitle"
 										placeholder="insert title..."
-										class="px-5 py-1 w-full outline-none">
-								</td>
-								<td class="border border-2 border-green-700">
-									<input
+										class="px-5 py-1 w-full outline-none"></td>
+									<td class="border border-2 border-green-700"><input
 										type="number" name="incomeAmount" id="incomeAmount"
 										placeholder="insert amount..."
-										class="px-5 py-1 w-full outline-none">
-								</td>
-								<td class="border border-2 border-green-700">
-									<button type="button" onclick="addIncomeItem()" class="px-5 py-1 w-full bg-green-500 text-white cursor-pointer transition hover:bg-green-400">add</button>
-								</td>
-							</tr>
-						</tbody>
-					</table>
-				</div>
-				<div>
-					<h2>Expenses table</h2>
-					<table class="table-auto border border-gray-300 w-full">
-						<thead class="bg-red-600 text-white text-left">
-							<tr>
-								<th class="px-5 py-1 border border-2 border-red-700">title</th>
-								<th class="px-5 py-1 border border-2 border-red-700">amount</th>
-								<th class="px-5 py-1 border border-2 border-red-700"></th>
-							</tr>
-						</thead>
-						<tbody id="expenseItems">
-							<tr>
-								<td class="border border-2 border-red-700">
-									<input
+										class="px-5 py-1 w-full outline-none"></td>
+									<td class="border border-2 border-green-700">
+										<button type="button" onclick="addIncomeItem()"
+											class="px-5 py-1 w-full bg-green-500 text-white cursor-pointer transition hover:bg-green-400">add</button>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+					<div>
+						<h2>Expenses table</h2>
+						<table class="table-auto border border-gray-300 w-full">
+							<thead class="bg-red-600 text-white text-left">
+								<tr>
+									<th class="px-5 py-1 border border-2 border-red-700">title</th>
+									<th class="px-5 py-1 border border-2 border-red-700">amount</th>
+									<th class="px-5 py-1 border border-2 border-red-700"></th>
+								</tr>
+							</thead>
+							<tbody id="expenseItems">
+								<tr>
+									<td class="border border-2 border-red-700"><input
 										type="text" name="expenseTitle" id="expenseTitle"
 										placeholder="insert title..."
-										class="px-5 py-1 w-full outline-none">
-								</td>
-								<td class="border border-2 border-red-700">
-									<input
+										class="px-5 py-1 w-full outline-none"></td>
+									<td class="border border-2 border-red-700"><input
 										type="number" name="expenseAmount" id="expenseAmount"
 										placeholder="insert amount..."
-										class="px-5 py-1 w-full outline-none">
-								</td>
-								<td class="border border-2 border-red-700">
-									<button type="button" onclick="addExpenseItem()" class="px-5 py-1 w-full bg-red-500 text-white cursor-pointer transition hover:bg-red-400">add</button>
-								</td>
-							</tr>
-							<tr>
-								<td class="border border-2 border-red-700">
-									<p class="px-5 py-1 w-full o">Shopee</p>
-								</td>
-								<td class="border border-2 border-red-700">
-									<p class="px-5 py-1 w-full o">1000</p>
-								</td>
-								<td class="border border-2 border-red-700">
-									
-								</td>
-							</tr>
-						</tbody>
-					</table>
+										class="px-5 py-1 w-full outline-none"></td>
+									<td class="border border-2 border-red-700">
+										<button type="button" onclick="addExpenseItem()"
+											class="px-5 py-1 w-full bg-red-500 text-white cursor-pointer transition hover:bg-red-400">add</button>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
 				</div>
 			</div>
-		</div>
+		</form>
 	</div>
 	<script th:src="@{/js/boxs/boxs_create.js}"></script>
 </body>

@@ -6,8 +6,13 @@ import java.util.Optional;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+
+import com.projects.nheejods.dtos.boxs.BoxDto;
+import com.projects.nheejods.dtos.boxs.BoxItemDto;
 
 @Controller
 @RequestMapping("/boxs")
@@ -62,5 +67,32 @@ public class BoxController {
     public String viewCreateBoxPage(Model model) {
         return "boxs/boxs_create";
     }
-
+    
+    @PostMapping("/create")
+    public String createBox(Model model, @ModelAttribute BoxDto boxDto) {
+    	
+    	System.out.println("Incomes:");
+    	for (BoxItemDto income : boxDto.getIncomes()) {
+    		System.out.println(income.toString());
+    	}
+    	System.out.println();
+    	
+    	
+    	System.out.println("Expenses:");
+    	for (BoxItemDto expense : boxDto.getExpenses()) {
+    		System.out.println(expense.toString());
+    	}
+    	System.out.println();
+    	
+    	
+    	return "boxs/boxs_create";
+    }
 }
+
+
+
+
+
+
+
+

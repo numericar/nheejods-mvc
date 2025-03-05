@@ -1,13 +1,14 @@
 package com.projects.nheejods.dtos.boxs;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 public class BoxDto {
 
     private Optional<Integer> id;
-    private List<BoxItemDto> incomes;
-    private List<BoxItemDto> expenses;
+    private List<BoxItemDto> incomes = new ArrayList<>();
+    private List<BoxItemDto> expenses = new ArrayList<>();;
 
     public BoxDto() {
     }

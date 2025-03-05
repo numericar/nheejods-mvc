@@ -14,11 +14,11 @@ function addIncomeItem() {
 		
 	trElement.innerHTML = `
 		<td class="border border-2 border-green-700">
-			<input type="hidden" name="incomes[${expenseCount}].title" value="${title}">
+			<input type="hidden" name="incomes[${incomeCount}].title" value="${title}">
 			<p class="px-5 py-1 w-full o">${title}</p>
 		</td>
 		<td class="border border-2 border-green-700">
-			<input type="hidden" name="incomes[${expenseCount}].amount" value="${amount}">
+			<input type="hidden" name="incomes[${incomeCount}].amount" value="${amount}">
 			<p class="px-5 py-1 w-full o">${amount}</p>
 		</td>
 		<td class="border border-2 border-green-700">
@@ -31,7 +31,7 @@ function addIncomeItem() {
 	titleElement.value = "";
 	amountElement.value = "";
 		
-	expenseCount++;
+	incomeCount++;
 }
 
 function addExpenseItem() {
@@ -46,11 +46,11 @@ function addExpenseItem() {
 	
 	trElement.innerHTML = `
 		<td class="border border-2 border-red-700">
-			<input type="hidden" name="expense[${expenseCount}].title" value="${title}">
+			<input type="hidden" name="expenses[${expenseCount}].title" value="${title}">
 			<p class="px-5 py-1 w-full o">${title}</p>
 		</td>
 		<td class="border border-2 border-red-700">
-			<input type="hidden" name="expense[${expenseCount}].amount" value="${amount}">
+			<input type="hidden" name="expenses[${expenseCount}].amount" value="${amount}">
 			<p class="px-5 py-1 w-full o">${amount}</p>
 		</td>
 		<td class="border border-2 border-red-700">
