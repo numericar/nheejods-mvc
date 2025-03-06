@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.projects.nheejods.dtos.boxs.BoxDto;
 import com.projects.nheejods.dtos.boxs.BoxItemDto;
@@ -73,39 +74,26 @@ public class BoxController {
     }
     
     @PostMapping("/create")
-    public String createBox(Model model, @ModelAttribute BoxDto boxDto, BindingResult result) {
-    	
-    	if (result.hasErrors()) {
-    		System.out.println("Has errors");
-    		return "boxs/boxs_create";
-    	}
+    public String createBox(
+    		Model model, 
+    		@ModelAttribute BoxDto boxDto, 
+    		BindingResult result,
+    		RedirectAttributes redirectAttributes) {
     	
     	if (boxDto.getMonth().isPresent()) {
-    		model.addAttribute("monthSelected", boxDto.getMonth().get());
+    		redirectAttributes.addFlashAttribute("monthSelected", boxDto.getMonth().get());
     	}
     	
     	if (boxDto.getYear().isPresent()) {
-    		model.addAttribute("yearSelected", boxDto.getYear().get());
+    		redirectAttributes.addFlashAttribute("yearSelected", boxDto.getYear().get());
     	}
     	
-    	System.out.println("Month: " + boxDto.getMonth().get());
-    	System.out.println("Year: " + boxDto.getYear().get());
-    	
-    	System.out.println("Incomes:");
-    	for (BoxItemDto income : boxDto.getIncomes()) {
-    		System.out.println(income.toString());
+    	if (result.hasErrors()) {
+    		System.out.println("Has errors");
+    		return "redirect:/boxs/create";
     	}
-    	System.out.println();
     	
-    	
-    	System.out.println("Expenses:");
-    	for (BoxItemDto expense : boxDto.getExpenses()) {
-    		System.out.println(expense.toString());
-    	}
-    	System.out.println();
-    	
-    	
-    	return "boxs/boxs_create";
+    	return "redirect:/boxs/create";
     }
 }
 
