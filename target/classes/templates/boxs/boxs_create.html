@@ -27,7 +27,91 @@
 		</div>
 		<form th:action="@{/boxs/create}" method="post">
 			<div>
-				<button class="px-4 py-2 bg-blue-500 cursor-pointer text-white transition rounded-lg hover:bg-blue-400">save</button>
+				<div class="flex justify-between items-end mb-5">
+					<div class="flex gap-5">
+						<div id="monthSelector" class="w-25">
+							<span class="text-sm">month</span>
+							<div class="relative">
+								<div
+									class="
+                            border-[1px]
+                            border-solid    
+                            boder-gray-500
+                            px-5
+                            py-1
+                            rounded-lg
+                            cursor-pointer
+                            bg-white
+                            w-full
+                            text-center"
+									onclick="toggleDropdownMonth()">
+									<span id="monthNameSelected"> <th:block
+											th:if="${monthSelected} != null">
+                                    [[${monthSelected}]]
+                                </th:block> <th:block
+											th:if="${monthSelected} == null">
+                                    -
+                                </th:block>
+									</span>
+								</div>
+								<div id="monthItems"
+									class="border-[1px] border-solid border-gray-500 rounded-lg overflow-hidden absolute top-12 w-full hidden">
+									<div th:each="month, iterStat : ${months}"
+										class="cursor-pointer hover:bg-gray-100 px-2 py-1 transition w-full bg-white"
+										th:object="${month}"
+										th:attr="onclick=|onSelectedMonth('${month}', 'months-${iterStat.index}')|">
+										<input type="radio" name="month"
+											th:id="'months-' + ${iterStat.index}" class="hidden"
+											th:value="${month}" th:checked="${month} == ${monthSelected}">
+										[[${month}]]
+									</div>
+								</div>
+							</div>
+						</div>
+						<div id="yearSelector" class="w-25">
+							<span class="text-sm">year</span>
+							<div class="relative">
+								<div
+									class="
+                            border-[1px]
+                            border-solid    
+                            boder-gray-500
+                            px-5
+                            py-1
+                            rounded-lg
+                            cursor-pointer
+                            bg-white
+                            w-full
+                            text-center"
+									onclick="toggleDropdownYear()">
+									<span id="yearNameSelected"> <th:block
+											th:if="${yearSelected} != null">
+                                    [[${yearSelected}]]
+                                </th:block> <th:block
+											th:if="${yearSelected} == null">
+                                    -
+                                </th:block>
+									</span>
+								</div>
+								<div id="yearItems"
+									class="border-[1px] border-solid border-gray-500 rounded-lg overflow-hidden absolute top-12 w-full hidden">
+									<div th:each="year, iterStat : ${years}"
+										class="cursor-pointer hover:bg-gray-100 px-2 py-1 transition w-full bg-white"
+										th:object="${year}"
+										th:attr="onclick=|onSelectedYear('${year}', 'year-${iterStat.index}')|">
+										<input type="radio" name="year"
+											th:id="'year-' + ${iterStat.index}" class="hidden"
+											th:value="${year}" th:checked="${year} == ${yearSelected}">
+										[[${year}]]
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div>
+						<button class="px-4 py-2 bg-blue-500 cursor-pointer text-white transition rounded-lg hover:bg-blue-400">save</button>
+					</div>
+				</div>
 				<div class="grid grid-cols-2 gap-20">
 					<div id="incomeContent">
 						<h2>Incomes table</h2>

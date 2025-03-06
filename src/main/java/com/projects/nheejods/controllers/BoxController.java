@@ -5,6 +5,7 @@ import java.util.Optional;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -65,11 +66,30 @@ public class BoxController {
 
     @GetMapping("/create")
     public String viewCreateBoxPage(Model model) {
+    	model.addAttribute("months", this.MONTHS);
+    	model.addAttribute("years", this.YEARS);
+    	
         return "boxs/boxs_create";
     }
     
     @PostMapping("/create")
-    public String createBox(Model model, @ModelAttribute BoxDto boxDto) {
+    public String createBox(Model model, @ModelAttribute BoxDto boxDto, BindingResult result) {
+    	
+    	if (result.hasErrors()) {
+    		System.out.println("Has errors");
+    		return "boxs/boxs_create";
+    	}
+    	
+    	if (boxDto.getMonth().isPresent()) {
+    		model.addAttribute("monthSelected", boxDto.getMonth().get());
+    	}
+    	
+    	if (boxDto.getYear().isPresent()) {
+    		model.addAttribute("yearSelected", boxDto.getYear().get());
+    	}
+    	
+    	System.out.println("Month: " + boxDto.getMonth().get());
+    	System.out.println("Year: " + boxDto.getYear().get());
     	
     	System.out.println("Incomes:");
     	for (BoxItemDto income : boxDto.getIncomes()) {
