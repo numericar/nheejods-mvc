@@ -23,11 +23,11 @@ function addIncomeItem() {
 	trElement.innerHTML = `
 		<td class="border border-2 border-green-700">
 			<input type="hidden" name="incomes[${incomeCount}].title" value="${title}">
-			<p class="px-5 py-1 w-full o">${title}</p>
+			<p class="px-5 py-1 w-full">${title}</p>
 		</td>
 		<td class="border border-2 border-green-700">
 			<input type="hidden" name="incomes[${incomeCount}].amount" value="${amount}">
-			<p class="px-5 py-1 w-full o">${amount}</p>
+			<p class="px-5 py-1 w-full">${amount}</p>
 		</td>
 		<td class="border border-2 border-green-700">
 												
@@ -58,11 +58,11 @@ function addExpenseItem() {
 	trElement.innerHTML = `
 		<td class="border border-2 border-red-700">
 			<input type="hidden" name="expenses[${expenseCount}].title" value="${title}">
-			<p class="px-5 py-1 w-full o">${title}</p>
+			<p class="px-5 py-1 w-full">${title}</p>
 		</td>
 		<td class="border border-2 border-red-700">
 			<input type="hidden" name="expenses[${expenseCount}].amount" value="${amount}">
-			<p class="px-5 py-1 w-full o">${amount}</p>
+			<p class="px-5 py-1 w-full">${amount}</p>
 		</td>
 		<td class="border border-2 border-red-700">
 											

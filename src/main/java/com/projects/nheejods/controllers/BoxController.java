@@ -1,5 +1,6 @@
 package com.projects.nheejods.controllers;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -70,6 +71,18 @@ public class BoxController {
     	model.addAttribute("months", this.MONTHS);
     	model.addAttribute("years", this.YEARS);
     	
+        List<BoxItemDto> incomes = new ArrayList<>();
+        
+        BoxItemDto income1 = new BoxItemDto();
+        income1.setId(1);
+        income1.setTitle("Salary");
+        income1.setAmount(24750);
+        
+        incomes.add(income1);
+        
+        model.addAttribute("incomes", incomes);
+        model.addAttribute("expenses", new ArrayList<BoxItemDto>());
+    	
         return "boxs/boxs_create";
     }
     
@@ -79,17 +92,22 @@ public class BoxController {
     		@ModelAttribute BoxDto boxDto, 
     		BindingResult result,
     		RedirectAttributes redirectAttributes) {
-    	
-    	if (boxDto.getMonth().isPresent()) {
-    		redirectAttributes.addFlashAttribute("monthSelected", boxDto.getMonth().get());
-    	}
-    	
-    	if (boxDto.getYear().isPresent()) {
-    		redirectAttributes.addFlashAttribute("yearSelected", boxDto.getYear().get());
+    	for (BoxItemDto income : boxDto.getIncomes()) {
+    		System.out.println(income.toString());
     	}
     	
     	if (result.hasErrors()) {
-    		System.out.println("Has errors");
+        	if (boxDto.getYear().isPresent()) {
+        		redirectAttributes.addFlashAttribute("yearSelected", boxDto.getYear().get());
+        	}
+        	
+        	if (boxDto.getMonth().isPresent()) {
+        		redirectAttributes.addFlashAttribute("monthSelected", boxDto.getMonth().get());
+        	}
+        	
+        	redirectAttributes.addFlashAttribute("incomes", boxDto.getIncomes());
+        	redirectAttributes.addFlashAttribute("expenses", boxDto.getExpenses());
+        	
     		return "redirect:/boxs/create";
     	}
     	

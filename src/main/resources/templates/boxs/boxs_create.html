@@ -138,6 +138,22 @@
 											class="px-5 py-1 w-full bg-green-500 text-white cursor-pointer transition hover:bg-green-400">add</button>
 									</td>
 								</tr>
+								<th:block th:each="income, iterStat : ${incomes}">
+									<tr>
+										<td class="border border-2 border-green-700">
+											<input type="hidden" th:value="${income.id}" th:name="'incomes[' + ${iterStat.index} + '].id'"/>
+											<input type="hidden" th:value="${income.title}" th:name="'incomes[' + ${iterStat.index} + '].title'"/>
+											<p class="px-5 py-1 w-full" th:text="${income.title}"></p>
+										</td>
+										<td class="border border-2 border-green-700">
+											<input type="hidden" th:value="${income.amount}" th:name="'incomes[' + ${iterStat.index} + '].amount'"/>
+											<p class="px-5 py-1 w-full" th:text="${income.amount}"></p>
+										</td>
+										<td class="border border-2 border-green-700">
+										
+										</td>
+									</tr>
+								</th:block>
 							</tbody>
 						</table>
 					</div>
