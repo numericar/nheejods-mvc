@@ -1,5 +1,13 @@
+let incomeSummary = 0;
+let expenseSummary = 0;
+let remainingSummary = 0;
 let incomeCount = 0;
 let expenseCount = 0;
+
+document.getElementById("incomeSummary").innerHTML = incomeSummary;
+document.getElementById("expenseSummary").innerText = expenseSummary;
+document.getElementById("remainingSummary").innerText = incomeSummary - expenseSummary;
+
 
 
 function addIncomeItem() {
@@ -32,6 +40,9 @@ function addIncomeItem() {
 	amountElement.value = "";
 		
 	incomeCount++;
+	
+	updateIncome(Number(amount));
+	updateRemaining();
 }
 
 function addExpenseItem() {
@@ -65,4 +76,29 @@ function addExpenseItem() {
 	
 	expenseCount++;
 	
+	updateExpense(Number(amount));
+	updateRemaining();
 }
+
+function updateIncome(amount) {
+	incomeSummary = parseFloat(amount.toFixed(2));
+
+	const incomeSummaryElement = document.getElementById("incomeSummary");
+	incomeSummaryElement.innerText = parseFloat(incomeSummary.toFixed(2));
+}
+
+function updateExpense(amount) {
+	expenseSummary +=  parseFloat(amount.toFixed(2));
+	console.log(expenseSummary);
+	
+	const expenseSummaryElement = document.getElementById("expenseSammary");
+	expenseSummaryElement.innerText = parseFloat(expenseSummary.toFixed(2));
+}
+
+function updateRemaining() {
+	remainingSummary = parseFloat((incomeSummary - expenseSummary).toFixed(2));
+	
+	document.getElementById("remainingSummary").innerText = remainingSummary;
+}
+
+
