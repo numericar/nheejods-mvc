@@ -43,7 +43,7 @@ function addIncomeItem() {
 	
 	updateIncome(Number(amount));
 	updateRemaining();
-}
+}  
 
 function addExpenseItem() {
 	const titleElement = document.getElementById("expenseTitle");
