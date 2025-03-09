@@ -1,9 +1,3 @@
-let incomeSummary = 0;
-let expenseSummary = 0;
-let remainingSummary = 0;
-let incomeCount = 0;
-let expenseCount = 0;
-
 document.getElementById("incomeSummary").innerHTML = incomeSummary;
 document.getElementById("expenseSummary").innerText = expenseSummary;
 document.getElementById("remainingSummary").innerText = incomeSummary - expenseSummary;
@@ -91,7 +85,7 @@ function updateExpense(amount) {
 	expenseSummary +=  parseFloat(amount.toFixed(2));
 	console.log(expenseSummary);
 	
-	const expenseSummaryElement = document.getElementById("expenseSammary");
+	const expenseSummaryElement = document.getElementById("expenseSummary");
 	expenseSummaryElement.innerText = parseFloat(expenseSummary.toFixed(2));
 }
 

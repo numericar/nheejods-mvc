@@ -17,6 +17,8 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.projects.nheejods.dtos.boxs.BoxDto;
 import com.projects.nheejods.dtos.boxs.BoxItemDto;
 
+import jakarta.validation.Valid;
+
 @Controller
 @RequestMapping("/boxs")
 public class BoxController {
@@ -68,20 +70,45 @@ public class BoxController {
 
     @GetMapping("/create")
     public String viewCreateBoxPage(Model model) {
+    	Optional<List<BoxItemDto>> incomesOptional = model.containsAttribute("incomes") ? this.safeCastList(model.getAttribute("incomes")) : Optional.empty();
+    	Optional<List<BoxItemDto>> expensesOptional = model.containsAttribute("expenses") ? this.safeCastList(model.getAttribute("expenses")) : Optional.empty();
+    	
+        List<BoxItemDto> incomes;
+        List<BoxItemDto> expenses;
+        
+        if (incomesOptional.isPresent()) {
+        	incomes = incomesOptional.get();
+        } else {
+        	incomes = new ArrayList<>();
+        }
+        
+        if (expensesOptional.isPresent()) {
+        	expenses = expensesOptional.get();
+        } else {
+        	expenses = new ArrayList<>();
+        }
+        
+        double incomeSummary = 0;
+        for (BoxItemDto income : incomes) {
+        	incomeSummary += income.getAmount();
+        }
+        
+        double expenseSummary = 0;
+        for (BoxItemDto expense : expenses) {
+        	expenseSummary += expense.getAmount();
+        }
+        
+        double remainingSummary = incomeSummary - expenseSummary;
+        
     	model.addAttribute("months", this.MONTHS);
     	model.addAttribute("years", this.YEARS);
-    	
-        List<BoxItemDto> incomes = new ArrayList<>();
-        
-        BoxItemDto income1 = new BoxItemDto();
-        income1.setId(1);
-        income1.setTitle("Salary");
-        income1.setAmount(24750);
-        
-        incomes.add(income1);
-        
-        model.addAttribute("incomes", incomes);
-        model.addAttribute("expenses", new ArrayList<BoxItemDto>());
+    	model.addAttribute("incomes", incomes);
+        model.addAttribute("expenses",expenses);
+        model.addAttribute("incomeSummary", incomeSummary);
+        model.addAttribute("expenseSummary", expenseSummary);
+        model.addAttribute("remainingSummary", remainingSummary);
+        model.addAttribute("currentIncomeCount", incomes.size());
+        model.addAttribute("currentExpenseCount", expenses.size());
     	
         return "boxs/boxs_create";
     }
@@ -89,7 +116,7 @@ public class BoxController {
     @PostMapping("/create")
     public String createBox(
     		Model model, 
-    		@ModelAttribute BoxDto boxDto, 
+    		@Valid @ModelAttribute BoxDto boxDto, 
     		BindingResult result,
     		RedirectAttributes redirectAttributes) {
     	for (BoxItemDto income : boxDto.getIncomes()) {
@@ -97,11 +124,11 @@ public class BoxController {
     	}
     	
     	if (result.hasErrors()) {
-        	if (boxDto.getYear().isPresent()) {
+        	if (boxDto.getYear() != null && boxDto.getYear().isPresent()) {
         		redirectAttributes.addFlashAttribute("yearSelected", boxDto.getYear().get());
         	}
         	
-        	if (boxDto.getMonth().isPresent()) {
+        	if (boxDto.getMonth() != null && boxDto.getMonth().isPresent()) {
         		redirectAttributes.addFlashAttribute("monthSelected", boxDto.getMonth().get());
         	}
         	
@@ -112,6 +139,17 @@ public class BoxController {
     	}
     	
     	return "redirect:/boxs/create";
+    }
+    
+    @SuppressWarnings("unchecked")
+    private Optional<List<BoxItemDto>> safeCastList(Object obj) {
+        if (obj instanceof List<?>) {
+            List<?> list = (List<?>) obj;
+            if (list.isEmpty() || list.get(0) instanceof BoxItemDto) {
+                return Optional.of((List<BoxItemDto>) list);
+            }
+        }
+        return Optional.empty();
     }
 }
 

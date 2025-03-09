@@ -16,7 +16,7 @@
 				<div
 					class="border border-[2px] border-gray-500 rounded-lg px-3 py-1">
 					<span class="text-sm">Expense</span>
-					<p class="text-center" id="expenseSammary">0</p>
+					<p class="text-center" id="expenseSummary">0</p>
 				</div>
 				<div
 					class="border border-[2px] border-gray-500 rounded-lg px-3 py-1">
@@ -182,6 +182,22 @@
 											class="px-5 py-1 w-full bg-red-500 text-white cursor-pointer transition hover:bg-red-400">add</button>
 									</td>
 								</tr>
+								<th:block th:each="expense, iterStat : ${expenses}">
+									<tr>
+										<td class="border border-2 border-red-700">
+											<input type="hidden" th:value="${expense.id}" th:name="'expenses[' + ${iterStat.index} + '].id'"/>
+											<input type="hidden" th:value="${expense.title}" th:name="'expenses[' + ${iterStat.index} + '].title'"/>
+											<p class="px-5 py-1 w-full" th:text="${expense.title}"></p>
+										</td>
+										<td class="border border-2 border-red-700">
+											<input type="hidden" th:value="${expense.amount}" th:name="'expenses[' + ${iterStat.index} + '].amount'"/>
+											<p class="px-5 py-1 w-full" th:text="${expense.amount}"></p>
+										</td>
+										<td class="border border-2 border-red-700">
+										
+										</td>
+									</tr>
+								</th:block>
 							</tbody>
 						</table>
 					</div>
@@ -189,6 +205,13 @@
 			</div>
 		</form>
 	</div>
+	<script>
+		var incomeSummary = [[${incomeSummary}]];
+		var expenseSummary = [[${expenseSummary}]];
+		var remainingSummary = [[${remainingSummary}]];
+		var incomeCount = [[${currentIncomeCount}]];
+		var expenseCount = [[${currentExpenseCount}]];
+	</script>
 	<script th:src="@{/js/boxs/boxs_create.js}"></script>
 </body>
 </html>
