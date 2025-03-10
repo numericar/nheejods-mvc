@@ -138,6 +138,8 @@ public class BoxController {
     		return "redirect:/boxs/create";
     	}
     	
+    	
+    	
     	return "redirect:/boxs/create";
     }
     
