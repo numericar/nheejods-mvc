@@ -138,7 +138,11 @@ public class BoxController {
     		return "redirect:/boxs/create";
     	}
     	
+    	// convert month name to index of month
     	
+    	// validate box is created by current user
+    	
+    	// create box
     	
     	return "redirect:/boxs/create";
     }
