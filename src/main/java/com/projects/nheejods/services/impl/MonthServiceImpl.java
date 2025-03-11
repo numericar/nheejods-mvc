@@ -2,7 +2,7 @@ package com.projects.nheejods.services.impl;
 
 import org.springframework.stereotype.Service;
 
-import com.projects.nheejods.securities.MonthService;
+import com.projects.nheejods.services.interfaces.MonthService;
 
 @Service
 public class MonthServiceImpl implements MonthService {

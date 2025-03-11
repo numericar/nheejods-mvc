@@ -1,4 +1,4 @@
-package com.projects.nheejods.securities;
+package com.projects.nheejods.services.interfaces;
 
 public interface MonthService {
 	String[] getNameMonths();
