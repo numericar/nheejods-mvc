@@ -14,6 +14,12 @@ public class BoxServiceImpl implements BoxService {
 		return null;
 	}
 
+	@Override
+	public boolean isExist(int monthIndex, int year, Integer userId) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
 	
 	
 }

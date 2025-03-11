@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -13,9 +15,15 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import com.projects.nheejods.dtos.boxs.BoxDto;
 import com.projects.nheejods.dtos.boxs.BoxItemDto;
+import com.projects.nheejods.entities.User;
+import com.projects.nheejods.securities.NheeJodsUserDetail;
+import com.projects.nheejods.services.interfaces.BoxService;
+import com.projects.nheejods.services.interfaces.MonthService;
+import com.projects.nheejods.services.interfaces.UserService;
 
 import jakarta.validation.Valid;
 
@@ -23,26 +31,20 @@ import jakarta.validation.Valid;
 @RequestMapping("/boxs")
 public class BoxController {
 
-    private final List<String> MONTHS;
-    private final List<Integer> YEARS;
+    private final String[] MONTHS;
+    private final int[] YEARS;
+    
+    private final MonthService monthService;
+    private final UserService userService;
+    private final BoxService boxService;
 
-    public BoxController() {
-        this.MONTHS = List.of(
-            "January", 
-            "February", 
-            "March", 
-            "April", 
-            "May", 
-            "June",
-            "July",
-            "August",
-            "September",
-            "October",
-            "November",
-            "December"
-        );
-
-        this.YEARS = List.of(2025, 2026, 2027, 2028);
+    public BoxController(MonthService monthService, UserService userService, BoxService boxService) {
+        this.MONTHS = monthService.getNameMonths();
+        this.YEARS = new int[] { 2025, 2026, 2027, 2028 };
+        
+        this.monthService = monthService;
+        this.userService = userService;
+        this.boxService = boxService;
     }
 
     @GetMapping
@@ -119,9 +121,6 @@ public class BoxController {
     		@Valid @ModelAttribute BoxDto boxDto, 
     		BindingResult result,
     		RedirectAttributes redirectAttributes) {
-    	for (BoxItemDto income : boxDto.getIncomes()) {
-    		System.out.println(income.toString());
-    	}
     	
     	if (result.hasErrors()) {
         	if (boxDto.getYear() != null && boxDto.getYear().isPresent()) {
@@ -138,10 +137,33 @@ public class BoxController {
     		return "redirect:/boxs/create";
     	}
     	
-    	// convert month name to index of month
+    	Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+    	UserDetails userDetail = (UserDetails) authentication.getPrincipal();
+    	Optional<User> userOptional = this.userService.getUserByEmail(userDetail.getUsername());
     	
+    	if (userOptional.isEmpty()) {
+    		return "redirect:/auths/login";
+    	}
+    	
+    	// convert month name to index of month
+    	int monthIndex = this.monthService.getMonthIndex(boxDto.getMonth().get());
     	
     	// validate box is created by current user
+    	boolean isExist = this.boxService.isExist(monthIndex, boxDto.getYear().get(), userOptional.get().getId());
+    	if (isExist) {
+    		if (boxDto.getYear() != null && boxDto.getYear().isPresent()) {
+        		redirectAttributes.addFlashAttribute("yearSelected", boxDto.getYear().get());
+        	}
+        	
+        	if (boxDto.getMonth() != null && boxDto.getMonth().isPresent()) {
+        		redirectAttributes.addFlashAttribute("monthSelected", boxDto.getMonth().get());
+        	}
+        	
+        	redirectAttributes.addFlashAttribute("incomes", boxDto.getIncomes());
+        	redirectAttributes.addFlashAttribute("expenses", boxDto.getExpenses());
+        	
+    		return "redirect:/boxs/create";
+    	}
     	
     	// create box
     	
