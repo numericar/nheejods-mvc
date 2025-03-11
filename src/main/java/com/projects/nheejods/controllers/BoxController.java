@@ -20,7 +20,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import com.projects.nheejods.dtos.boxs.BoxDto;
 import com.projects.nheejods.dtos.boxs.BoxItemDto;
 import com.projects.nheejods.entities.User;
-import com.projects.nheejods.securities.NheeJodsUserDetail;
 import com.projects.nheejods.services.interfaces.BoxService;
 import com.projects.nheejods.services.interfaces.MonthService;
 import com.projects.nheejods.services.interfaces.UserService;
