@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://thymeleaf.org/extras/spring-security">
+
+<head th:replace="~{commons/head :: header}"></head>
+
+<body>
+    <nav th:replace="~{commons/navbar :: navbar}"></nav>
+    <div class="container mx-auto mt-5">
+        <section id="filter" class="mb-10 flex justify-between items-end">
+            <form th:action="@{/boxs}" method="get" class="w-full flex items-end gap-5">
+                <div id="monthSelector" class="w-25">
+                    <span class="text-sm">month</span>
+                    <div class="relative">
+                        <div class="
+                            border-[1px]
+                            border-solid    
+                            boder-gray-500
+                            px-5
+                            py-1
+                            rounded-lg
+                            cursor-pointer
+                            bg-white
+                            w-full
+                            text-center" onclick="toggleDropdownMonth()">
+                            <span id="monthNameSelected">
+                                <th:block th:if="${monthSelected} != null">
+                                    [[${monthSelected}]]
+                                </th:block>
+                                <th:block th:if="${monthSelected} == null">
+                                    -
+                                </th:block>
+                            </span>
+                        </div>
+                        <div id="monthItems" class="border-[1px] border-solid border-gray-500 rounded-lg overflow-hidden absolute top-12 w-full hidden">
+                            <div 
+                                type="button" 
+                                th:each="month, iterStat : ${months}" 
+                                class="cursor-pointer hover:bg-gray-100 px-2 py-1 transition w-full bg-white" 
+                                th:object="${month}" 
+                                th:attr="onclick=|onSelectedMonth('${month}', 'months-${iterStat.index}')|"
+                            >
+                                <input type="radio" name="months" th:id="'months-' + ${iterStat.index}" class="hidden" th:value="${month}" th:checked="${month} == ${monthSelected}">
+                                [[${month}]]
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div id="yearSelector" class="w-25">
+                    <span class="text-sm">year</span>
+                    <div class="relative">
+                        <div class="
+                            border-[1px]
+                            border-solid    
+                            boder-gray-500
+                            px-5
+                            py-1
+                            rounded-lg
+                            cursor-pointer
+                            bg-white
+                            w-full
+                            text-center" onclick="toggleDropdownYear()">
+                            <span id="yearNameSelected">
+                                <th:block th:if="${yearSelected} != null">
+                                    [[${yearSelected}]]
+                                </th:block>
+                                <th:block th:if="${yearSelected} == null">
+                                    -
+                                </th:block>
+                            </span>
+                        </div>
+                        <div id="yearItems" class="border-[1px] border-solid border-gray-500 rounded-lg overflow-hidden absolute top-12 w-full hidden">
+                            <div 
+                                type="button" 
+                                th:each="year, iterStat : ${years}" 
+                                class="cursor-pointer hover:bg-gray-100 px-2 py-1 transition w-full bg-white" 
+                                th:object="${year}" 
+                                th:attr="onclick=|onSelectedYear('${year}', 'year-${iterStat.index}')|"
+                            >
+                                <input type="radio" name="years" th:id="'year-' + ${iterStat.index}" class="hidden" th:value="${year}" th:checked="${year} == ${yearSelected}">
+                                 [[${year}]]
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="w-25">
+                    <button type="submit" class="border-[1px] border-solid border-gray-500 px-5 py-1 rounded-lg cursor-pointer w-full text-center bg-blue-500 text-white transition hover:bg-blue-400">find</button>
+                </div>
+            </form>
+            <div>
+                <a th:href="@{/boxs/create}" class="bg-orange-500 px-4 py-2 text-white transition rounded-lg cursor-pointer hover:bg-orange-400">create</a>
+            </div>
+        </section>
+        <section id="boxs" class="grid grid-cols-4 gap-5">
+            <div class="border-[1px] border-gray-400 border-solid overflow-hidden rounded-lg p-4 cursor-pointer transition hover:bg-linear-to-r hover:from-orange-500/25 hover:to-blue-500/25">
+                <div class="text-center">
+                    <h1 class="font-bold text-lg">Janury</h1>
+                </div>
+                <div class="text-center">
+                    <span class="text-sm">Remaining</span>
+                    <p>20000</p>
+                </div>
+                <div class="flex justify-around">
+                    <div class="text-center">
+                        <span class="text-sm text-green-500 font-bold">income</span>
+                        <p>40000</p>
+                    </div>
+                    <div class="text-center">
+                        <span class="text-sm text-red-500 font-bold">expense</span>
+                        <p>20000</p>
+                    </div>
+                </div>
+                <div class="text-center mt-5">
+                    <div class="grid grid-cols-4 gap-2 w-40 mx-auto">
+                        <div class="h-2 bg-green-500"></div>
+                        <div class="h-2 bg-yellow-500"></div>
+                        <div class="h-2 bg-red-500"></div>
+                        <div class="h-2 bg-red-900"></div>
+                    </div>
+                    <h2 class="font-bold text-2xl">40.00%</h2>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <script th:src="@{/js/boxs/boxs_index.js}"></script>
+</body>
+
+</html>
