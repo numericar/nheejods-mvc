@@ -73,4 +73,4 @@ public class BoxDto {
 		return "BoxDto [id=" + id + ", incomes=" + incomes + ", expenses=" + expenses + "]";
 	}
 }
-  
+    
