@@ -19,6 +19,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import com.projects.nheejods.dtos.boxs.BoxDto;
 import com.projects.nheejods.dtos.boxs.BoxItemDto;
+import com.projects.nheejods.entities.Box;
 import com.projects.nheejods.entities.User;
 import com.projects.nheejods.services.interfaces.BoxService;
 import com.projects.nheejods.services.interfaces.MonthService;
@@ -165,6 +166,17 @@ public class BoxController {
     	}
     	
     	// create box
+        Box boxCreated = this.boxService.createBox(boxDto.getYear().get(), monthIndex, userOptional.get());
+
+        // append income to box
+        for (BoxItemDto income : boxDto.getIncomes()) {
+        	this.boxService.appendIncomeItem(boxCreated, income.getTitle(), income.getAmount());
+        }
+        
+        // append expense to box
+        for (BoxItemDto expense : boxDto.getExpenses()) {
+        	this.boxService.appendIncomeItem(boxCreated, expense.getTitle(), expense.getAmount());
+        }
     	
     	return "redirect:/boxs/create";
     }

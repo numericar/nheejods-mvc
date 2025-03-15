@@ -2,8 +2,12 @@ package com.projects.nheejods.entities;
 
 import java.time.LocalDateTime;
 
+import com.projects.nheejods.enums.BoxItemType;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -32,6 +36,10 @@ public class BoxItem {
 
     @Column(name = "updated_at", nullable = false)
     private LocalDateTime updatedAt;
+    
+    @Enumerated(EnumType.ORDINAL)
+    @Column(name = "item_type", nullable = false)
+    private BoxItemType itemType;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "box_id")
@@ -40,11 +48,13 @@ public class BoxItem {
     public BoxItem() {
     }
 
-    public BoxItem(String title, Double amount) {
+    public BoxItem(String title, Double amount, BoxItemType itemType, Box box) {
         LocalDateTime currentDateTime = LocalDateTime.now();
 
         this.title = title;
         this.amount = amount;
+        this.itemType = itemType;
+        this.box = box;
         this.createdAt = currentDateTime;
         this.updatedAt = currentDateTime;
     }
@@ -73,7 +83,15 @@ public class BoxItem {
         this.amount = amount;
     }
 
-    public LocalDateTime getCreatedAt() {
+    public BoxItemType getItemType() {
+		return itemType;
+	}
+
+	public void setItemType(BoxItemType itemType) {
+		this.itemType = itemType;
+	}
+
+	public LocalDateTime getCreatedAt() {
         return createdAt;
     }
 
