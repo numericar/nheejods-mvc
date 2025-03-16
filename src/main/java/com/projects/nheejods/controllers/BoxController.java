@@ -19,8 +19,11 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import com.projects.nheejods.dtos.boxs.BoxDto;
 import com.projects.nheejods.dtos.boxs.BoxItemDto;
+import com.projects.nheejods.dtos.boxs.ShortBoxDto;
 import com.projects.nheejods.entities.Box;
+import com.projects.nheejods.entities.BoxItem;
 import com.projects.nheejods.entities.User;
+import com.projects.nheejods.enums.BoxItemType;
 import com.projects.nheejods.services.interfaces.BoxService;
 import com.projects.nheejods.services.interfaces.MonthService;
 import com.projects.nheejods.services.interfaces.UserService;
@@ -52,6 +55,14 @@ public class BoxController {
             Model model,
             @RequestParam(name = "months", required = false) Optional<String> month,
             @RequestParam(name = "years", required = false) Optional<Integer> year) {
+    	Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+    	UserDetails userDetail = (UserDetails) authentication.getPrincipal();
+    	Optional<User> userOptional = this.userService.getUserByEmail(userDetail.getUsername());
+    	
+    	if (userOptional.isEmpty()) {
+    		return "redirect:/auths/login";
+    	}
+    	
         model.addAttribute("months", this.MONTHS);
         model.addAttribute("years", this.YEARS);
 
@@ -66,6 +77,50 @@ public class BoxController {
         } else {
             model.addAttribute("yearSelected", null);
         }
+        
+        // read user boxs
+        Optional<List<Box>> boxsOptional = this.boxService.getBoxByUser(userOptional.get());
+
+        List<ShortBoxDto> shortBoxDtos = new ArrayList<>();
+        
+        if (boxsOptional.isPresent()) 
+        {
+        	for (Box box : boxsOptional.get()) {
+        		// read box items
+        		List<BoxItem> boxItems = box.getBoxItems();
+        		
+                double incomeSummary = 0.0;
+                double expenseSummary = 0.0;
+                double remainingSummary = 0.0;
+                double expensePercent = 0.0;
+
+        		// summary income
+                for (BoxItem boxItem : boxItems) { 
+                    if (boxItem.getItemType() == BoxItemType.INCOME) {
+                        incomeSummary += boxItem.getAmount();
+                    }
+
+                    if (boxItem.getItemType() == BoxItemType.EXPENSE) {
+                        expenseSummary += boxItem.getAmount();
+                    }
+                }
+
+                remainingSummary = incomeSummary - expenseSummary;
+
+                if (incomeSummary <= 0) {
+                    expensePercent = 100.0;
+                } else {
+                    expensePercent = (expensePercent / incomeSummary) * 100.0;
+                }
+
+                String monthName = this.monthService.getMonthName(box.getMonth());
+                ShortBoxDto shortBoxDto = new ShortBoxDto(monthName, box.getYear(), incomeSummary, expenseSummary, remainingSummary, expensePercent);
+                
+                shortBoxDtos.add(shortBoxDto);
+        	}
+        }
+        
+        model.addAttribute("boxs", shortBoxDtos);
 
         return "boxs/boxs_index";
     }

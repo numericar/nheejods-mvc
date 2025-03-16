@@ -6,13 +6,13 @@ public class ShortBoxDto {
 	private double incomeSummary;
 	private double expenseSummary;
 	private double remainingSummary;
-	private int expensePercent;
+	private double expensePercent;
 	
 	public ShortBoxDto() {
 		
 	}
 
-	public ShortBoxDto(String month, Integer year, double incomeSummary, double expenseSummary, double remainingSummary, int expensePercent) {
+	public ShortBoxDto(String month, Integer year, double incomeSummary, double expenseSummary, double remainingSummary, double expensePercent) {
 		super();
 		this.month = month;
 		this.year = year;
@@ -62,11 +62,11 @@ public class ShortBoxDto {
 		this.remainingSummary = remainingSummary;
 	}
 
-	public int getExpensePercent() {
+	public double getExpensePercent() {
 		return expensePercent;
 	}
 
-	public void setExpensePercent(int expensePercent) {
+	public void setExpensePercent(double expensePercent) {
 		this.expensePercent = expensePercent;
 	}
 }

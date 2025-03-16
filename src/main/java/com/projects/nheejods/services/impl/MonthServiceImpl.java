@@ -30,4 +30,14 @@ public class MonthServiceImpl implements MonthService {
 		return index;
 	}
 
+	@Override
+	public String getMonthName(int monthIndex) {
+		if (monthIndex < 0) monthIndex = 0;
+		if (monthIndex > 12) monthIndex = 12;
+
+		monthIndex -= 1;
+
+		return this.MONTHS[monthIndex];
+	}
+
 }

@@ -1,6 +1,7 @@
 package com.projects.nheejods.services.interfaces;
 
 import java.util.List;
+import java.util.Optional;
 
 import com.projects.nheejods.dtos.boxs.BoxItemDto;
 import com.projects.nheejods.entities.Box;
@@ -13,4 +14,5 @@ public interface BoxService {
 	void appendRangIncomeItem(List<BoxItemDto> items, Box box);
 	void appendRangExpenseItem(List<BoxItemDto> items, Box box);
 	boolean isExist(int monthIndex, int year, Integer userId);
+	Optional<List<Box>> getBoxByUser(User user);
 }

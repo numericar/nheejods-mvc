@@ -104,7 +104,15 @@ public class Box {
         this.user = user;
     }
 
-    @Override
+    public List<BoxItem> getBoxItems() {
+		return boxItems;
+	}
+
+	public void setBoxItems(List<BoxItem> boxItems) {
+		this.boxItems = boxItems;
+	}
+
+	@Override
     public String toString() {
         return "Box [id=" + id + ", year=" + year + ", month=" + month + ", createdAt=" + createdAt + ", updatedAt="
                 + updatedAt + ", user=" + user + "]";

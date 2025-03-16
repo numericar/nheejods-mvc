@@ -1,8 +1,8 @@
 package com.projects.nheejods.services.impl;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
@@ -89,5 +89,10 @@ public class BoxServiceImpl implements BoxService {
 		
 		this.boxItemRepository.saveAll(boxItems);
 		
+	}
+
+	@Override
+	public Optional<List<Box>> getBoxByUser(User user) {
+		return this.boxRepository.findByUserId(user.getId());
 	}
 }
