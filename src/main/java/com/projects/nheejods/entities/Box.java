@@ -26,7 +26,7 @@ public class Box {
     @Column(name = "year", nullable = false, length = 4)
     private Integer year;
 
-    @Column(name = "name", nullable = false, length = 2)
+    @Column(name = "month", nullable = false, length = 2)
     private Integer month;
 
     @Column(name = "created_at", nullable = false)
@@ -47,9 +47,13 @@ public class Box {
     }
 
     public Box(Integer year, Integer month, User user) {
-        this.year = year;
+        LocalDateTime currentDateTime = LocalDateTime.now();
+    	
+    	this.year = year;
         this.month = month;
         this.user = user;
+        this.createdAt = currentDateTime;
+        this.updatedAt = currentDateTime;
     }
 
     public Integer getId() {

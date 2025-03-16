@@ -30,13 +30,7 @@ public class BoxServiceImpl implements BoxService {
 
 	@Override
 	public Box createBox(Integer year, Integer month, User createdBy) {
-		LocalDateTime createdAt = LocalDateTime.now();
-		
-		Box box = new Box();
-		box.setYear(year);
-		box.setMonth(month);
-		box.setUser(createdBy);
-		box.setCreatedAt(createdAt);
+		Box box = new Box(year, month, createdBy);
 		
 		Box boxCreated = this.boxRepository.save(box);
 		
