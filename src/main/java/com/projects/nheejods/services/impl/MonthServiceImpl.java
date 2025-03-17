@@ -37,7 +37,7 @@ public class MonthServiceImpl implements MonthService {
 
 		monthIndex -= 1;
 
-		return this.MONTHS[monthIndex];
+		return this.MONTHS[monthIndex]; 
 	}
 
 }
