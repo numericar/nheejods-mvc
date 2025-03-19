@@ -114,7 +114,7 @@ public class BoxController {
                 }
 
                 String monthName = this.monthService.getMonthName(box.getMonth());
-                ShortBoxDto shortBoxDto = new ShortBoxDto(monthName, box.getYear(), incomeSummary, expenseSummary, remainingSummary, expensePercent);
+                ShortBoxDto shortBoxDto = new ShortBoxDto(box.getId(), monthName, box.getYear(), incomeSummary, expenseSummary, remainingSummary, expensePercent);
                 
                 shortBoxDtos.add(shortBoxDto);
         	}

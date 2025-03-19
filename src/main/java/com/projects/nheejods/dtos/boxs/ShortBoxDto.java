@@ -1,6 +1,7 @@
 package com.projects.nheejods.dtos.boxs;
 
 public class ShortBoxDto {
+	private Integer id;
 	private String month;
 	private Integer year;
 	private double incomeSummary;
@@ -12,14 +13,22 @@ public class ShortBoxDto {
 		
 	}
 
-	public ShortBoxDto(String month, Integer year, double incomeSummary, double expenseSummary, double remainingSummary, double expensePercent) {
-		super();
+	public ShortBoxDto(Integer id, String month, Integer year, double incomeSummary, double expenseSummary, double remainingSummary, double expensePercent) {
+		this.id = id;
 		this.month = month;
 		this.year = year;
 		this.incomeSummary = incomeSummary;
 		this.expenseSummary = expenseSummary;
 		this.remainingSummary = remainingSummary;
 		this.expensePercent = expensePercent;
+	}
+
+	public Integer getId() {
+		return id;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
 	}
 
 	public String getMonth() {

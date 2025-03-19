@@ -90,35 +90,37 @@
                 <a th:href="@{/boxs/create}" class="bg-orange-500 px-4 py-2 text-white transition rounded-lg cursor-pointer hover:bg-orange-400">create</a>
             </div>
         </section>
-        <section id="boxs" class="grid grid-cols-4 gap-5">
-            <div class="border-[1px] border-gray-400 border-solid overflow-hidden rounded-lg p-4 cursor-pointer transition hover:bg-linear-to-r hover:from-orange-500/25 hover:to-blue-500/25">
-                <div class="text-center">
-                    <h1 class="font-bold text-lg">Janury</h1>
-                </div>
-                <div class="text-center">
-                    <span class="text-sm">Remaining</span>
-                    <p>20000</p>
-                </div>
-                <div class="flex justify-around">
+        <section id="boxs" class="grid grid-cols-5 gap-5">
+            <th:block th:each="box : ${boxs}" th:object="${box}">
+                <a th:href="@{/boxs/edit/{id}(id=${box.id})}" class="border-[1px] border-gray-400 border-solid overflow-hidden rounded-lg p-4 cursor-pointer transition hover:bg-linear-to-r hover:from-orange-500/25 hover:to-blue-500/25">
                     <div class="text-center">
-                        <span class="text-sm text-green-500 font-bold">income</span>
-                        <p>40000</p>
+                        <h1 class="font-bold text-lg" th:text="*{month}">Janury</h1>
                     </div>
                     <div class="text-center">
-                        <span class="text-sm text-red-500 font-bold">expense</span>
-                        <p>20000</p>
+                        <span class="text-sm">Remaining</span>
+                        <p th:text="*{remainingSummary}">20000</p>
                     </div>
-                </div>
-                <div class="text-center mt-5">
-                    <div class="grid grid-cols-4 gap-2 w-40 mx-auto">
-                        <div class="h-2 bg-green-500"></div>
-                        <div class="h-2 bg-yellow-500"></div>
-                        <div class="h-2 bg-red-500"></div>
-                        <div class="h-2 bg-red-900"></div>
+                    <div class="flex justify-around">
+                        <div class="text-center">
+                            <span class="text-sm text-green-500 font-bold">income</span>
+                            <p th:text="*{incomeSummary}">40000</p>
+                        </div>
+                        <div class="text-center">
+                            <span class="text-sm text-red-500 font-bold">expense</span>
+                            <p th:text="*{expenseSummary}">20000</p>
+                        </div>
                     </div>
-                    <h2 class="font-bold text-2xl">40.00%</h2>
-                </div>
-            </div>
+                    <div class="text-center mt-5">
+                        <div class="grid grid-cols-4 gap-2 w-40 mx-auto">
+                            <div class="h-2 bg-green-500"></div>
+                            <div class="h-2 bg-yellow-500"></div>
+                            <div class="h-2 bg-red-500"></div>
+                            <div class="h-2 bg-red-900"></div>
+                        </div>
+                        <h2 class="font-bold text-2xl" th:text="*{expensePercent}">40.00%</h2>
+                    </div>
+                </a>
+            </th:block>
         </section>
     </div>
 
