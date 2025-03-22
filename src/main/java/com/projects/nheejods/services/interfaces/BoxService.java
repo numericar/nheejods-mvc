@@ -15,4 +15,5 @@ public interface BoxService {
 	void appendRangExpenseItem(List<BoxItemDto> items, Box box);
 	boolean isExist(int monthIndex, int year, Integer userId);
 	Optional<List<Box>> getBoxByUser(User user);
+	Optional<Box> getBoxById(Integer id);
 }

@@ -11,6 +11,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -234,6 +235,60 @@ public class BoxController {
         }
     	
     	return "redirect:/boxs/create";
+    }
+
+    @GetMapping("/edit/{id}")
+    public String viewEditPage(Model model, @PathVariable(name = "id") Integer id) {
+        System.out.println("id: " + id);
+
+        Optional<Box> boxOptional = this.boxService.getBoxById(id);
+        if (boxOptional.isEmpty()) {
+            return "redirect:/boxs";
+        }
+        
+        Box box = boxOptional.get();
+        
+        List<BoxItemDto> incomeDtos = new ArrayList<>();
+        List<BoxItemDto> expenseDtos = new ArrayList<>();
+        double incomeSummary = 0.0;
+        double expenseSummary = 0.0;
+        double remainingSummary = 0.0;
+        
+        for (BoxItem boxItem : box.getBoxItems()) {
+        	if (boxItem.getItemType() == BoxItemType.INCOME) {
+        		
+        	}
+        	
+        	switch (boxItem.getItemType()) {
+        		case INCOME: 
+        			incomeDtos.add(new BoxItemDto(boxItem.getId(), boxItem.getTitle(), boxItem.getAmount()));
+        			incomeSummary += boxItem.getAmount();
+        			remainingSummary += boxItem.getAmount();
+        			break;
+        		case EXPENSE:
+        			expenseDtos.add(new BoxItemDto(boxItem.getId(), boxItem.getTitle(), boxItem.getAmount()));
+        			expenseSummary += boxItem.getAmount();
+        			remainingSummary -= boxItem.getAmount();
+        			break;
+        		default:
+        			incomeDtos.add(new BoxItemDto(boxItem.getId(), boxItem.getTitle(), boxItem.getAmount()));
+        			incomeSummary += boxItem.getAmount();
+        	}
+        }
+        
+        model.addAttribute("months", this.MONTHS);
+        model.addAttribute("years", this.YEARS);
+        model.addAttribute("yearSelected", box.getYear());
+        model.addAttribute("monthSelected", this.monthService.getMonthName(box.getMonth()));
+        model.addAttribute("incomes", incomeDtos);
+        model.addAttribute("expenses", expenseDtos);
+        model.addAttribute("incomeSummary", incomeSummary);
+        model.addAttribute("expenseSummary", expenseSummary);
+        model.addAttribute("remainingSummary", remainingSummary);
+        model.addAttribute("currentIncomeCount", incomeDtos.size());
+        model.addAttribute("currentExpenseCount", incomeDtos.size());
+        
+        return "boxs/boxs_edit";
     }
     
     @SuppressWarnings("unchecked")

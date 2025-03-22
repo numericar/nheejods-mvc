@@ -16,7 +16,7 @@ public class MonthServiceImpl implements MonthService {
 
 	@Override
 	public int getMonthIndex(String monthName) {
-		int index = 1;
+		int index = 0;
 		
 		for (int monthIndex = 0; monthIndex < this.MONTHS.length; monthIndex++) {
 			String currentMonth = this.MONTHS[monthIndex];
@@ -33,9 +33,7 @@ public class MonthServiceImpl implements MonthService {
 	@Override
 	public String getMonthName(int monthIndex) {
 		if (monthIndex < 0) monthIndex = 0;
-		if (monthIndex > 12) monthIndex = 12;
-
-		monthIndex -= 1;
+		if (monthIndex > 11) monthIndex = 11;
 
 		return this.MONTHS[monthIndex]; 
 	}

@@ -13,7 +13,14 @@ public class BoxItemDto {
         this.amount = amount;
     }
     
-    public Integer getId() {
+    public BoxItemDto(Integer id, String title, double amount) {
+		super();
+		this.id = id;
+		this.title = title;
+		this.amount = amount;
+	}
+
+	public Integer getId() {
         return id;
     }
 

@@ -95,4 +95,9 @@ public class BoxServiceImpl implements BoxService {
 	public Optional<List<Box>> getBoxByUser(User user) {
 		return this.boxRepository.findByUserId(user.getId());
 	}
+
+	@Override
+	public Optional<Box> getBoxById(Integer id) {
+		return this.boxRepository.findById(id);
+	}
 }
