@@ -1,10 +1,219 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head th:replace="~{commons/head :: header}"></head>
 <body>
-    <nav th:replace="~{commons/navbar :: navbar}"></nav>
-    <div class="container mx-auto">
-        <p>test</p>
-    </div>
+	<nav th:replace="~{commons/navbar :: navbar}"></nav>
+	<div class="container mx-auto mt-5">
+		<div id="summary" class="mb-10">
+			<h2>Summary</h2>
+			<div class="grid grid-cols-3 gap-5 w-[25%] text-sm">
+				<div
+					class="border border-[2px] border-gray-500 rounded-lg px-3 py-1">
+					<span>Income</span>
+					<p class="text-center" id="incomeSummary">0</p>
+				</div>
+				<div
+					class="border border-[2px] border-gray-500 rounded-lg px-3 py-1">
+					<span class="text-sm">Expense</span>
+					<p class="text-center" id="expenseSummary">0</p>
+				</div>
+				<div
+					class="border border-[2px] border-gray-500 rounded-lg px-3 py-1">
+					<span class="text-sm">Remaining</span>
+					<p class="text-center" id="remainingSummary">0</p>
+				</div>
+			</div>
+		</div>
+		<form th:action="@{/boxs/create}" method="post">
+			<div>
+				<div class="flex justify-between items-end mb-5">
+					<div class="flex gap-5">
+						<div id="monthSelector" class="w-[150px]">
+							<span class="text-sm">month</span>
+							<div class="relative">
+								<div
+									class="
+                            border-[1px]
+                            border-solid    
+                            border-gray-500
+                            px-5
+                            py-1
+                            rounded-lg
+                            cursor-pointer
+                            bg-white
+                            w-full
+                            text-center"
+									onclick="toggleDropdownMonth()">
+									<span id="monthNameSelected"> <th:block
+											th:if="${monthSelected} != null">
+                                    [[${monthSelected}]]
+                                </th:block> <th:block
+											th:if="${monthSelected} == null">
+                                    -
+                                </th:block>
+									</span>
+								</div>
+								<div id="monthItems"
+									class="border-[1px] border-solid border-gray-500 rounded-lg overflow-hidden absolute top-12 w-full hidden">
+									<div th:each="month, iterStat : ${months}"
+										class="cursor-pointer hover:bg-gray-100 px-2 py-1 transition w-full bg-white"
+										th:object="${month}"
+										th:attr="onclick=|onSelectedMonth('${month}', 'months-${iterStat.index}')|">
+										<input type="radio" name="month"
+											th:id="'months-' + ${iterStat.index}" class="hidden"
+											th:value="${month}" th:checked="${month} == ${monthSelected}">
+										[[${month}]]
+									</div>
+								</div>
+							</div>
+						</div>
+						<div id="yearSelector" class="w-[150px]">
+							<span class="text-sm">year</span>
+							<div class="relative">
+								<div
+									class="
+                            border-[1px]
+                            border-solid    
+                            border-gray-500
+                            px-5
+                            py-1
+                            rounded-lg
+                            cursor-pointer
+                            bg-white
+                            w-full
+                            text-center"
+									onclick="toggleDropdownYear()">
+									<span id="yearNameSelected"> <th:block
+											th:if="${yearSelected} != null">
+                                    [[${yearSelected}]]
+                                </th:block> <th:block
+											th:if="${yearSelected} == null">
+                                    -
+                                </th:block>
+									</span>
+								</div>
+								<div id="yearItems"
+									class="border-[1px] border-solid border-gray-500 rounded-lg overflow-hidden absolute top-12 w-full hidden">
+									<div th:each="year, iterStat : ${years}"
+										class="cursor-pointer hover:bg-gray-100 px-2 py-1 transition w-full bg-white"
+										th:object="${year}"
+										th:attr="onclick=|onSelectedYear('${year}', 'year-${iterStat.index}')|">
+										<input type="radio" name="year"
+											th:id="'year-' + ${iterStat.index}" class="hidden"
+											th:value="${year}" th:checked="${year} == ${yearSelected}">
+										[[${year}]]
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div>
+						<button class="px-4 py-2 bg-blue-500 cursor-pointer text-white transition rounded-lg hover:bg-blue-400">save</button>
+					</div>
+				</div>
+				<div class="grid grid-cols-2 gap-20">
+					<div id="incomeContent">
+						<h2>Incomes table</h2>
+						<table class="table-auto border border-gray-300 w-full">
+							<thead class="bg-green-600 text-white text-left">
+								<tr>
+									<th class="px-5 py-1 border border-2 border-green-700">title</th>
+									<th class="px-5 py-1 border border-2 border-green-700">amount</th>
+									<th class="px-5 py-1 border border-2 border-green-700"></th>
+								</tr>
+							</thead>
+							<tbody id="incomeItems">
+								<tr>
+									<td class="border border-2 border-green-700"><input
+										type="text" name="incomeTitle" id="incomeTitle"
+										placeholder="insert title..."
+										class="px-5 py-1 w-full outline-none"></td>
+									<td class="border border-2 border-green-700"><input
+										type="number" name="incomeAmount" id="incomeAmount"
+										placeholder="insert amount..."
+										class="px-5 py-1 w-full outline-none"></td>
+									<td class="border border-2 border-green-700">
+										<button type="button" onclick="addIncomeItem()"
+											class="px-5 py-1 w-full bg-green-500 text-white cursor-pointer transition hover:bg-green-400">add</button>
+									</td>
+								</tr>
+								<th:block th:each="income, iterStat : ${incomes}">
+									<tr>
+										<td class="border border-2 border-green-700">
+											<input type="hidden" th:value="${income.id}" th:name="'incomes[' + ${iterStat.index} + '].id'"/>
+											<input type="hidden" th:value="${income.title}" th:name="'incomes[' + ${iterStat.index} + '].title'"/>
+											<p class="px-5 py-1 w-full" th:text="${income.title}"></p>
+										</td>
+										<td class="border border-2 border-green-700">
+											<input type="hidden" th:value="${income.amount}" th:name="'incomes[' + ${iterStat.index} + '].amount'"/>
+											<p class="px-5 py-1 w-full" th:text="${income.amount}"></p>
+										</td>
+										<td class="border border-2 border-green-700 flex">
+                                            <button class="px-5 py-1 w-full bg-orange-500 text-white cursor-pointer transition hover:bg-orange-400">edit</button>
+                                            <button class="px-5 py-1 w-full bg-red-500 text-white cursor-pointer transition hover:bg-red-400">remove</button>
+										</td>
+									</tr>
+								</th:block>
+							</tbody>
+						</table>
+					</div>
+					<div>
+						<h2>Expenses table</h2>
+						<table class="table-auto border border-gray-300 w-full">
+							<thead class="bg-red-600 text-white text-left">
+								<tr>
+									<th class="px-5 py-1 border border-2 border-red-700">title</th>
+									<th class="px-5 py-1 border border-2 border-red-700">amount</th>
+									<th class="px-5 py-1 border border-2 border-red-700"></th>
+								</tr>
+							</thead>
+							<tbody id="expenseItems">
+								<tr>
+									<td class="border border-2 border-red-700"><input
+										type="text" name="expenseTitle" id="expenseTitle"
+										placeholder="insert title..."
+										class="px-5 py-1 w-full outline-none"></td>
+									<td class="border border-2 border-red-700"><input
+										type="number" name="expenseAmount" id="expenseAmount"
+										placeholder="insert amount..."
+										class="px-5 py-1 w-full outline-none"></td>
+									<td class="border border-2 border-red-700">
+										<button type="button" onclick="addExpenseItem()"
+											class="px-5 py-1 w-full bg-red-500 text-white cursor-pointer transition hover:bg-red-400">add</button>
+									</td>
+								</tr>
+								<th:block th:each="expense, iterStat : ${expenses}">
+									<tr>
+										<td class="border border-2 border-red-700">
+											<input type="hidden" th:value="${expense.id}" th:name="'expenses[' + ${iterStat.index} + '].id'"/>
+											<input type="hidden" th:value="${expense.title}" th:name="'expenses[' + ${iterStat.index} + '].title'"/>
+											<p class="px-5 py-1 w-full" th:text="${expense.title}"></p>
+										</td>
+										<td class="border border-2 border-red-700">
+											<input type="hidden" th:value="${expense.amount}" th:name="'expenses[' + ${iterStat.index} + '].amount'"/>
+											<p class="px-5 py-1 w-full" th:text="${expense.amount}"></p>
+										</td>
+										<td class="border border-2 border-red-700">
+                                            <button class="px-5 py-1 w-full bg-orange-500 text-white cursor-pointer transition hover:bg-orange-400">edit</button>
+                                            <button class="px-5 py-1 w-full bg-red-500 text-white cursor-pointer transition hover:bg-red-400">remove</button>
+										</td>
+									</tr>
+								</th:block>
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+		</form>
+	</div>
+	<script>
+		var incomeSummary = [[${incomeSummary}]];
+		var expenseSummary = [[${expenseSummary}]];
+		var remainingSummary = [[${remainingSummary}]];
+		var incomeCount = [[${currentIncomeCount}]];
+		var expenseCount = [[${currentExpenseCount}]];
+	</script>
+	<script th:src="@{/js/boxs/boxs_create.js}"></script>
 </body>
 </html>
